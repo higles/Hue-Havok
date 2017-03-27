@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 049aa5d81237e2649b0dec2fe8ce8275
+timeCreated: 1490581542
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - whiteMatOuter: {instanceID: 0}
+  - whiteMatCenter: {instanceID: 0}
+  - whiteMatText: {fileID: 2100000, guid: 3924b898cf3ca1c4c998ad68c58a6726, type: 2}
+  - greenMatOuter: {instanceID: 0}
+  - greenMatCenter: {instanceID: 0}
+  - greenMatText: {fileID: 2100000, guid: 083ad78ae1f2c8742bbcd70e9fc61392, type: 2}
+  - unassigned: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
