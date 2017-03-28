@@ -68,6 +68,8 @@ public class MoveMenuCam : MonoBehaviour {
                 Debug.Log(transform.rotation);
                 break;
             case "Exit":
+                Debug.Log("Exitting game");
+                Application.Quit();
                 break;
             case "Play":    //switch to map scene and spawn player
                 //add new player to GameController
