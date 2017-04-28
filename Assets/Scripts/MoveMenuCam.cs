@@ -8,7 +8,7 @@ public class MoveMenuCam : MonoBehaviour {
     
     protected Vector3 playVect = new Vector3(1, 1, -0.33f);
     protected Vector3 optionsVect = new Vector3(-0.5f, -1, -0.45f);
-    private Vector3 backVector;
+    private Vector3 backVect;
 
     public Transform ball;
     public float rotateSpeed;
@@ -27,44 +27,10 @@ public class MoveMenuCam : MonoBehaviour {
         switch (action)
         {
             case "Play Game":   //rotate to play menu
-                if (rotated <= playRotateAmount)
-                {   //rotate around ball
-                    rotated += Time.deltaTime * rotateSpeed;
-                    transform.RotateAround(ball.position, playVect, Time.deltaTime * rotateSpeed);
-                }
-                else
-                {
-                    //undo over-rotation
-                    transform.RotateAround(ball.position, playVect * -1, rotated - playRotateAmount);
-
-                    //set back rotation settings
-                    backVector = playVect * -1;
-                    backRotateAmount = playRotateAmount;
-
-                    //reset
-                    action = null;
-                    rotated = 0;
-                }
+                RotateToMenu(playRotateAmount, playVect);
                 break;
             case "Options":
-                if (rotated <= optionsRotateAmount)
-                {   //rotate around ball
-                    rotated += Time.deltaTime * rotateSpeed;
-                    transform.RotateAround(ball.position, optionsVect, Time.deltaTime * rotateSpeed);
-                }
-                else
-                {
-                    //undo over-rotation
-                    transform.RotateAround(ball.position, optionsVect * -1, rotated - optionsRotateAmount);
-
-                    //set back rotation settings
-                    backVector = optionsVect * -1;
-                    backRotateAmount = optionsRotateAmount;
-
-                    //reset
-                    action = null;
-                    rotated = 0;
-                }
+                RotateToMenu(optionsRotateAmount, optionsVect);
                 Debug.Log(transform.rotation);
                 break;
             case "Exit":
@@ -88,20 +54,7 @@ public class MoveMenuCam : MonoBehaviour {
                 SceneManager.LoadScene("The Arena");
                 break;
             case "Back":
-                if (rotated <= backRotateAmount)
-                {   //rotate around ball
-                    rotated += Time.deltaTime * rotateSpeed;
-                    transform.RotateAround(ball.position, backVector, Time.deltaTime * rotateSpeed);
-                }
-                else
-                {
-                    //undo over-rotation
-                    transform.RotateAround(ball.position, backVector * -1, rotated - backRotateAmount);
-
-                    //reset
-                    action = null;
-                    rotated = 0;
-                }
+                RotateToMenu(backRotateAmount, backVect);
         break;
             default:
                 break;
@@ -112,5 +65,35 @@ public class MoveMenuCam : MonoBehaviour {
     {
         Debug.Log(selection);
         action = selection;
+    }
+
+    private void RotateToMenu(float rotateAmount, Vector3 rotateVector)
+    {
+        if (rotated < rotateAmount)
+        {   //rotate around ball
+            if (rotateAmount < rotated + Time.deltaTime * rotateSpeed)
+            {   //finish rotation
+                rotated = rotateAmount;
+                transform.RotateAround(ball.position, rotateVector, rotateAmount - rotated);
+            }
+            else
+            {   //rotate normally
+                rotated += Time.deltaTime * rotateSpeed;
+                transform.RotateAround(ball.position, rotateVector, Time.deltaTime * rotateSpeed);
+            }
+        }
+        else
+        {
+            //undo over-rotation
+            transform.RotateAround(ball.position, rotateVector * -1, rotated - rotateAmount);
+
+            //set back rotation settings
+            backVect = rotateVector * -1;
+            backRotateAmount = rotateAmount;
+
+            //reset
+            action = null;
+            rotated = 0;
+        }
     }
 }
