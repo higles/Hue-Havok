@@ -2,27 +2,28 @@
 using System.Collections;
 
 public class MoveCamera : MonoBehaviour {
-    private GameObject player;
+    private GameObject playerObject;
 
 	// Use this for initialization
 	void Start () {
         SetFocus();
 
-        transform.position = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+        transform.position = new Vector3(playerObject.transform.position.x, transform.position.y, playerObject.transform.position.z);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (player == null)
+        if (playerObject == null)
         {
             SetFocus();
         }
-        transform.position = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+        transform.position = new Vector3(playerObject.transform.position.x, transform.position.y, playerObject.transform.position.z);
     }
 
     public void SetFocus()
     {
-        player = GameObject.Find(GameController.control.playerName);
-        player.AddComponent<MovePlayer>().speed = 10;
+        Player player = GameController.control.FindPlayer(GameController.control.playerName);
+        playerObject = GameObject.Find(GameController.control.playerName);
+        playerObject.AddComponent<MovePlayer>().speed = 7 + 0.18f * player.playerHue["Green"];
     }
 }

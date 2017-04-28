@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpawnPoint : MonoBehaviour {
     public GameObject player;
+
     private bool isTriggered;
+    private List<GameObject> players;
 
 	// Use this for initialization
 	void Start () {
@@ -12,6 +15,8 @@ public class SpawnPoint : MonoBehaviour {
 
             SpawnPlayerObject(p);
         }
+
+        players = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
@@ -21,8 +26,9 @@ public class SpawnPoint : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log(transform.GetSiblingIndex() + ": " + col.name + " ENTERED");
         isTriggered = true;
+        players.Add(col.gameObject);
+        Debug.Log(transform.GetSiblingIndex() + ": " + col.name + " ENTERED: " + isTriggered);
     }
     void OnTriggerStay(Collider col)
     {
@@ -30,8 +36,9 @@ public class SpawnPoint : MonoBehaviour {
     }
     void OnTriggerExit(Collider col)
     {
-        Debug.Log(transform.GetSiblingIndex() + ": " + col.name + " EXITED");
         isTriggered = false;
+        players.Remove(col.gameObject);
+        Debug.Log(transform.GetSiblingIndex() + ": " + col.name + " EXITED: " + isTriggered);
     }
 
     public void SpawnPlayerObject(Player p)
@@ -47,6 +54,15 @@ public class SpawnPoint : MonoBehaviour {
 
     public bool IsTriggered()
     {
-        return isTriggered;
+        return (players.Count > 0);
+    }
+    public void RemovePlayer(Player p)
+    {
+        players.Remove(p.playerObject.gameObject);
+    }
+
+    public bool CheckPlayersTriggering(Player p)
+    {
+        return players.Contains(p.playerObject);
     }
 }
